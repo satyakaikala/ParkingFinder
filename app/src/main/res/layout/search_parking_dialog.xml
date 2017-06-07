@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/fromSelectorRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/from_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/button_padding"
+            android:drawableStart="@mipmap/ic_action_access_time"
+            android:hint="@string/park_any_time_after"
+            android:padding="@dimen/button_padding" />
+
+        <Button
+            android:id="@+id/from_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/button_padding"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/from_time"
+            android:drawableStart="@mipmap/ic_action_date_range"
+            android:hint="@string/from_date"
+            android:padding="@dimen/button_padding" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/toSelectorRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/to_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/button_padding"
+            android:layout_alignParentStart="true"
+            android:drawableStart="@mipmap/ic_action_access_time"
+            android:hint="@string/exit_any_time_before"
+            android:padding="@dimen/button_padding" />
+
+        <Button
+            android:id="@+id/to_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:drawablePadding="@dimen/button_padding"
+            android:layout_toEndOf="@id/to_time"
+            android:drawableStart="@mipmap/ic_action_date_range"
+            android:hint="@string/to_date"
+            android:padding="@dimen/button_padding" />
+    </RelativeLayout>
+</LinearLayout>

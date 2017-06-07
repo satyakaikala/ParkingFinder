@@ -4,4 +4,11 @@
     <string name="permission_request_ok">ALLOW</string>
     <string name="permission_request_deny">DENY</string>
     <string name="fab_action_text">Search</string>
+    <string name="park_any_time_after">Park any time after</string>
+    <string name="from_date">From date</string>
+    <string name="exit_any_time_before">Exit any time before</string>
+    <string name="to_date">To date</string>
+    <string name="dialog_title">Complete your search</string>
+    <string name="dialog_negative_button">Cancel</string>
+    <string name="dialog_positive_button">Search</string>
 </resources>
