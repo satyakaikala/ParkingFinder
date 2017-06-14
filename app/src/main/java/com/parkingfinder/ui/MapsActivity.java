@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,18 +29,24 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parkingfinder.R;
+import com.parkingfinder.data.ParkingList;
 import com.parkingfinder.sync.ParkingSyncJob;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+import java.util.ArrayList;
+
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, ResponseHandler {
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    private static final String TAG = MapsActivity.class.getSimpleName();
     private GoogleMap googleMap;
     private GoogleApiClient googleApiClient;
     private Location lastLocation;
     private Marker currLocationMarker;
     private LocationRequest locationRequest;
-    private double lat;
-    private double lng;
+    private float lat;
+    private float lng;
+    private ArrayList<ParkingList> parkingLists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +71,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void buttonAction(@SuppressWarnings("UnusedParameters") View view) {
-    new SearchParkingDialog().show(getFragmentManager(), "SearchParkingDialog");
+        new SearchParkingDialog().show(getFragmentManager(), "SearchParkingDialog");
     }
 
     /**
@@ -128,13 +135,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onLocationChanged(Location location) {
-        lastLocation = location;
+        this.lastLocation = location;
         if (currLocationMarker != null) {
             currLocationMarker.remove();
         }
 
-        lat = location.getLatitude();
-        lng = location.getLongitude();
+        lat = (float) location.getLatitude();
+        lng = (float) location.getLongitude();
         //Place current location marker
         LatLng latLng = new LatLng(lat, lng);
         MarkerOptions markerOptions = new MarkerOptions();
@@ -152,6 +159,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (googleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         }
+
+        Utility.saveLatLngprefs(this, lat, lng);
     }
 
     public boolean checkLocationPermission() {
@@ -209,6 +218,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void searchParkingLots() {
+        Log.d(TAG, "Invoking sync job to start service call");
         ParkingSyncJob.getParkingList(this);
+    }
+
+    @Override
+    public void updateParkingList(ArrayList<ParkingList> lists) {
+        this.parkingLists = lists;
+        Log.d(TAG, "Fetched parking list : " + lists.toString());
+        for (int i=0; i < parkingLists.size(); i++){
+            createMarkerPoints(parkingLists.get(i).getLocationName(),
+                    parkingLists.get(i).getLat(),
+                    parkingLists.get(i).getLng(),
+                    parkingLists.get(i).getAvailable_spots());
+        }
+    }
+
+    private void createMarkerPoints(String locationName, float lat, float lng, String availableSpots) {
+        googleMap.clear();
+        googleMap.addMarker(new MarkerOptions()
+        .snippet(availableSpots)
+        .anchor(0.5f, 0.5f)
+        .title(locationName)
+        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_park_location)));
     }
 }

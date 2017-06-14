@@ -31,6 +31,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <service
+            android:name=".sync.ParkingIntentService"
+            android:exported="false" />
+
+        <service
+            android:name=".sync.ParkingJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
     </application>
 
 </manifest>

@@ -16,9 +16,9 @@ public class ParkingList implements Parcelable {
     @SerializedName("location_id")
     private String locationId;
     @SerializedName("lat")
-    private double lat;
+    private float lat;
     @SerializedName("lng")
-    private double lng;
+    private float lng;
     @SerializedName("start")
     private long startTime;
     @SerializedName("end")
@@ -34,8 +34,8 @@ public class ParkingList implements Parcelable {
 
     protected ParkingList(Parcel in) {
         locationName = in.readString();
-        lat = in.readDouble();
-        lng = in.readDouble();
+        lat = in.readFloat();
+        lng = in.readFloat();
         locationId = in.readString();
         startTime = in.readLong();
         endTime = in.readLong();
@@ -65,19 +65,19 @@ public class ParkingList implements Parcelable {
         this.locationName = locationName;
     }
 
-    public double getLat() {
+    public float getLat() {
         return lat;
     }
 
-    public void setLat(double lat) {
+    public void setLat(float lat) {
         this.lat = lat;
     }
 
-    public double getLng() {
+    public float getLng() {
         return lng;
     }
 
-    public void setLng(double lng) {
+    public void setLng(float lng) {
         this.lng = lng;
     }
 
@@ -145,8 +145,8 @@ public class ParkingList implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(locationName);
-        dest.writeDouble(lat);
-        dest.writeDouble(lng);
+        dest.writeFloat(lat);
+        dest.writeFloat(lng);
         dest.writeString(locationId);
         dest.writeLong(startTime);
         dest.writeLong(endTime);
